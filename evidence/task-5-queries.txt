@@ -1,0 +1,87 @@
+# Task 5 runtime evidence
+
+## 5.1 NULL vs 0
+
+SQL:
+
+```sql
+SELECT id, title, enrolment_count, average_rating
+FROM wp_bl_courses
+ORDER BY id;
+```
+
+Output:
+
+```
+id      title   enrolment_count average_rating
+1       Introduction to Bread Baking    128     4.60
+2       Sourdough Starters      64      4.20
+3       Pastry Fundamentals     NULL    NULL
+4       Cake Decorating Basics  9       0.00
+5       Advanced Laminated Dough        0       NULL
+```
+
+## 5.2 Constraint after migration
+
+SQL:
+
+```sql
+SHOW CREATE TABLE wp_bl_withdrawals;
+```
+
+Output confirms the corrective unique key:
+
+```
+UNIQUE KEY `uq_reference` (`instructor_id`,`payout_reference`)
+```
+
+Duplicate insert:
+
+```sql
+INSERT INTO wp_bl_withdrawals
+  (instructor_id, amount_minor, status, payout_reference)
+VALUES
+  (2, 60000, 'pending', 'duplicate_check_evidence');
+
+INSERT INTO wp_bl_withdrawals
+  (instructor_id, amount_minor, status, payout_reference)
+VALUES
+  (2, 60000, 'pending', 'duplicate_check_evidence');
+```
+
+Output:
+
+```
+ERROR 1062 (23000) at line 1: Duplicate entry '2-duplicate_check_evidence' for key 'wp_bl_withdrawals.uq_reference'
+```
+
+## 5.3 Non-refunded enrolments and revenue
+
+SQL:
+
+```sql
+SELECT c.title,
+       COUNT(e.id) AS non_refunded_enrolments,
+       COALESCE(SUM(CASE WHEN e.refunded_at IS NULL
+                         THEN e.amount_paid_minor ELSE 0 END), 0)
+         AS total_non_refunded_revenue_minor
+FROM wp_bl_courses c
+LEFT JOIN wp_bl_enrolments e
+  ON e.course_id = c.id
+ AND e.refunded_at IS NULL
+GROUP BY c.id, c.title
+ORDER BY c.id;
+```
+
+Output:
+
+```
+title   non_refunded_enrolments total_non_refunded_revenue_minor
+Introduction to Bread Baking    2       9000
+Sourdough Starters      0       0
+Pastry Fundamentals     0       0
+Cake Decorating Basics  0       0
+Advanced Laminated Dough        0       0
+```
+
+The query uses a LEFT JOIN so courses with no enrolments remain in the result.

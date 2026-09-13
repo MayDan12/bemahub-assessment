@@ -1,0 +1,73 @@
+Oluwanimoteles-MacBook-Air ~ % curl -s -X POST http://localhost:8080/wp-json/bemalearn/v1/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"instructor@example.test","password":"assessment123"}'
+{"token":"Redated","user":{"id":2,"name":"Ada Okafor","role":"instructor"}}%   
+
+
+Oluwanimoteles-MacBook-Air ~ % curl -s -X POST http://localhost:8080/wp-json/bemalearn/v1/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"learner@example.test","password":"assessment123"}'  
+{"token":"Redacted","user":{"id":3,"name":"Bola Adeyemi","role":"learner"}}%    
+
+
+HTTP/1.1 200 OK
+Date: Sat, 12 Sep 2026 07:40:35 GMT
+Server: Apache/2.4.67 (Debian)
+X-Powered-By: PHP/8.3.31
+X-Robots-Tag: noindex
+Link: <http://localhost:8080/wp-json/>; rel="https://api.w.org/"
+X-Content-Type-Options: nosniff
+Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link
+Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
+Allow: GET
+Vary: Origin
+Content-Length: 875
+Content-Type: application/json; charset=UTF-8
+
+{"courses":[{"id":4,"title":"Cake Decorating Basics","instructorName":"Ada Okafor","priceMinor":3000,"currency":"NGN","enrolmentCount":9,"averageRating":0,"publishedAt":"2026-06-11T08:00:00+00:00","isPublished":true},{"id":3,"title":"Pastry Fundamentals","instructorName":"Ada Okafor","priceMinor":7500,"currency":"NGN","enrolmentCount":null,"averageRating":null,"publishedAt":"2026-05-20T08:00:00+00:00","isPublished":true},{"id":2,"title":"Sourdough Starters","instructorName":"Ada Okafor","priceMinor":6000,"currency":"NGN","enrolmentCount":64,"averageRating":4.2,"publishedAt":"2026-04-02T08:00:00+00:00","isPublished":true},{"id":1,"title":"Introduction to Bread Baking","instructorName":"Ada Okafor","priceMinor":4500,"currency":"NGN","enrolmentCount":128,"averageRating":4.6,"publishedAt":"2026-03-14T08:00:00+00:00","isPublished":true}],"previewExpiresInSeconds":300}HTTP/1.1 200 OK
+
+
+Date: Sat, 12 Sep 2026 07:40:35 GMT
+Server: Apache/2.4.67 (Debian)
+X-Powered-By: PHP/8.3.31
+X-Robots-Tag: noindex
+Link: <http://localhost:8080/wp-json/>; rel="https://api.w.org/"
+X-Content-Type-Options: nosniff
+Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link
+Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
+Allow: GET
+Vary: Origin
+Content-Length: 325
+Content-Type: application/json; charset=UTF-8
+
+{"id":1,"title":"Introduction to Bread Baking","instructorName":"Ada Okafor","priceMinor":4500,"currency":"NGN","enrolmentCount":128,"averageRating":4.6,"publishedAt":"2026-03-14T08:00:00+00:00","isPublished":true,"description":"Introduction to Bread Baking - a short course for the assessment environment.","lessonCount":12}HTTP/1.1 401 Unauthorized
+
+
+
+Date: Sat, 12 Sep 2026 07:40:35 GMT
+Server: Apache/2.4.67 (Debian)
+X-Powered-By: PHP/8.3.31
+X-Robots-Tag: noindex
+Link: <http://localhost:8080/wp-json/>; rel="https://api.w.org/"
+X-Content-Type-Options: nosniff
+Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link
+Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
+Vary: Origin
+Content-Length: 81
+Content-Type: application/json; charset=UTF-8
+
+{"code":"unauthenticated","message":"Sign in to continue.","data":{"status":401}}HTTP/1.1 401 Unauthorized
+
+
+Date: Sat, 12 Sep 2026 07:40:35 GMT
+Server: Apache/2.4.67 (Debian)
+X-Powered-By: PHP/8.3.31
+X-Robots-Tag: noindex
+Link: <http://localhost:8080/wp-json/>; rel="https://api.w.org/"
+X-Content-Type-Options: nosniff
+Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link
+Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
+Content-Length: 81
+Content-Type: application/json; charset=UTF-8
+
+{"code":"unauthenticated","message":"Sign in to continue.","data":{"status":401}}%                                     
