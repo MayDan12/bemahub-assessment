@@ -4,11 +4,9 @@
  * The request interceptor is wired for you: it attaches the stored bearer
  * token. You should not need to set the Authorization header by hand anywhere
  * else in the app.
- *
- * The RESPONSE interceptor is deliberately incomplete - see TASK-2.
  */
 import axios from "axios";
-import { getStoredToken } from "@/lib/auth/authStore";
+import { getStoredToken, useAuthStore } from "@/lib/auth/authStore";
 
 const baseURL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080/wp-json/bemalearn/v1";
@@ -28,8 +26,27 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// TODO (Task 2): handle 401 here.
-// Think about what should happen to stored auth state, and how a caller can
-// tell a TRANSPORT failure (no response at all) from a BUSINESS refusal.
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (!axios.isAxiosError(error)) {
+      return Promise.reject(new Error("Something went wrong while contacting the server."));
+    }
+
+    if (!error.response) {
+      return Promise.reject(new Error("Network error. Please check your connection and try again."));
+    }
+
+    if (error.response.status === 401) {
+      useAuthStore.getState().signOut();
+    }
+
+    const payload = error.response.data as { message?: string; code?: string } | undefined;
+    const message = payload?.message ?? `Request failed with status ${error.response.status}.`;
+    const wrapped = new Error(message);
+    Object.assign(wrapped, { response: error.response });
+    return Promise.reject(wrapped);
+  }
+);
 
 export default api;
